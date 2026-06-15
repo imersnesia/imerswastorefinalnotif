@@ -85,7 +85,8 @@
                         wa_number: '6281234567890',
                         auto_reply: 'Halo Kak, saya mau pesan...',
                         tutorial_data: '[]',
-                        social_media: '[]'
+                        social_media: '[]',
+                        notif_templates: '{}'
                     };
                 }
             } else {
@@ -510,6 +511,28 @@
                             <label class="block text-sm font-medium text-emerald-600 mb-1">Nomor Device / Sender WA</label>
                             <input type="text" id="setGatewaySender" class="w-full px-4 py-2.5 border border-emerald-200 rounded-lg focus:outline-none focus:border-emerald-500 text-sm" placeholder="62812xxx (Wajib untuk WAplus)">
                             <p class="text-[10px] text-slate-500 mt-1">Jika dikonfigurasi, struk POS dan Lupa Password akan dikirim otomatis ke WhatsApp pelanggan.</p>
+                        </div>
+
+                        <!-- FITUR TEMPLATE NOTIFIKASI DINAMIS (BARU) -->
+                        <h4 class="font-bold text-slate-700 mt-6 border-b pb-1 flex items-center gap-2"><i data-lucide="message-square-dashed" class="w-5 h-5 text-indigo-500"></i> Template Notifikasi WhatsApp</h4>
+                        <p class="text-[10px] text-slate-500 mb-3">Sesuaikan isi pesan yang akan dikirim otomatis oleh bot WA Anda. Gunakan tag [KATA] agar berubah otomatis jadi data asli.</p>
+                        
+                        <div class="space-y-4 bg-slate-50 p-4 border border-slate-200 rounded-xl">
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-1">Pesan Sambutan (Toko Baru)</label>
+                                <p class="text-[10px] text-slate-500 mb-1">Tag tersedia: <b class="text-indigo-600">[NAMA_TOKO], [USERNAME], [PASSWORD]</b></p>
+                                <textarea id="setNotifWelcome" rows="3" class="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:border-emerald-500 text-sm" placeholder="Halo [NAMA_TOKO]..."></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-1">Pesan Lupa Password</label>
+                                <p class="text-[10px] text-slate-500 mb-1">Tag tersedia: <b class="text-indigo-600">[NAMA_TOKO], [USERNAME], [PASSWORD]</b></p>
+                                <textarea id="setNotifForgot" rows="3" class="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:border-emerald-500 text-sm" placeholder="Password baru Anda adalah [PASSWORD]..."></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-1">Pesan Struk Order (Checkout)</label>
+                                <p class="text-[10px] text-slate-500 mb-1">Tag tersedia: <b class="text-indigo-600">[NAMA_PEMBELI], [ORDER_ID], [TOTAL], [METODE_BAYAR], [RINCIAN_ORDER]</b></p>
+                                <textarea id="setNotifCheckout" rows="4" class="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:border-emerald-500 text-sm" placeholder="Terima kasih [NAMA_PEMBELI], total belanja Anda [TOTAL]..."></textarea>
+                            </div>
                         </div>
 
                         <!-- FITUR SECRET TAP LOGIN -->
@@ -986,9 +1009,9 @@
             const themeColorEl = document.getElementById('setThemeColor');
             if(themeColorEl) themeColorEl.value = currentUser.theme_color || '#f8fafc';
 
-            // SETUP TUTORIAL INPUTS & PLAYLIST (BARU)
+            // SETUP TUTORIAL INPUTS & PLAYLIST
             const tutContainer = document.getElementById('tutorialInputsContainer');
-            if(tutContainer) tutContainer.innerHTML = ''; // bersihkan dulu
+            if(tutContainer) tutContainer.innerHTML = ''; 
             let tutData = [];
             try { 
                 if(currentUser.tutorial_data && currentUser.tutorial_data !== '') {
@@ -997,13 +1020,13 @@
             } catch(e) { console.error("Error parse tutorial JSON:", e); }
             
             if(tutData.length === 0) {
-                if(tutContainer) addTutorialInput(); // Kosong 1 input
+                if(tutContainer) addTutorialInput(); 
             } else {
                 if(tutContainer) tutData.forEach(link => addTutorialInput(link));
             }
-            renderTutorialPlaylist(tutData); // Render view panduannya
+            renderTutorialPlaylist(tutData);
 
-            // SETUP SOCIAL MEDIA INPUTS (BARU)
+            // SETUP SOCIAL MEDIA INPUTS
             const smContainer = document.getElementById('socialMediaContainer');
             if(smContainer) smContainer.innerHTML = '';
             let smData = [];
@@ -1016,6 +1039,23 @@
             if(smData.length > 0) {
                 if(smContainer) smData.forEach(item => addSocialMediaInput(item.platform, item.url));
             }
+
+            // SETUP NOTIF TEMPLATES DINAMIS
+            let notifData = {};
+            try { 
+                if(currentUser.notif_templates && currentUser.notif_templates !== '') {
+                    notifData = JSON.parse(currentUser.notif_templates); 
+                }
+            } catch(e) { console.error("Error parse notif templates JSON:", e); }
+            
+            const setNotifWelcome = document.getElementById('setNotifWelcome');
+            if (setNotifWelcome) setNotifWelcome.value = notifData.welcome_msg || '';
+            
+            const setNotifForgot = document.getElementById('setNotifForgot');
+            if (setNotifForgot) setNotifForgot.value = notifData.forgot_pass_msg || '';
+            
+            const setNotifCheckout = document.getElementById('setNotifCheckout');
+            if (setNotifCheckout) setNotifCheckout.value = notifData.checkout_msg || '';
 
             // Fetch Global Setting dulu sebelum render menu
             await fetchGlobalSettings();
@@ -1862,6 +1902,13 @@
                 if(url !== '') smArray.push({ platform, url });
             });
 
+            // Tangkap Input Notifikasi Dinamis
+            const notifTemplates = {
+                welcome_msg: document.getElementById('setNotifWelcome') ? document.getElementById('setNotifWelcome').value : '',
+                forgot_pass_msg: document.getElementById('setNotifForgot') ? document.getElementById('setNotifForgot').value : '',
+                checkout_msg: document.getElementById('setNotifCheckout') ? document.getElementById('setNotifCheckout').value : ''
+            };
+
             const payload = {
                 id_user_toko: currentUser.id,
                 nama_toko: document.getElementById('setNamaToko') ? document.getElementById('setNamaToko').value : '',
@@ -1880,7 +1927,8 @@
                 banner_url: document.getElementById('setBannerUrl') ? document.getElementById('setBannerUrl').value : '',
                 theme_color: document.getElementById('setThemeColor') ? document.getElementById('setThemeColor').value : '',
                 tutorial_data: JSON.stringify(tutArray),
-                social_media: JSON.stringify(smArray)
+                social_media: JSON.stringify(smArray),
+                notif_templates: JSON.stringify(notifTemplates)
             };
 
             const res = await apiCall('update_store_settings', payload);
