@@ -11,7 +11,8 @@
   
   <!-- SAKLAR SAAS MODE -->
   <script>
-    const SETTING_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwKbN_R8gdRG5_jLniXD0LXZSMTUiU8gO5Ae-s3FAnfxV7gpaRstdovRiJbS_izuZeQpw/exec';
+    // URL DEPLOY TERBARU LO SUDAH DIPASANG DI SINI BOS!
+    const SETTING_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw5b-MqpGYCHgQzQtQrf2lIOoWs71CAARJBnRL4ALiJwxI5jbkNJ680zzXgv-KWWRES/exec';
     
     let fdSettings = new FormData();
     fdSettings.append('action', 'get_app_settings');
@@ -1753,9 +1754,9 @@
           </p>
 
           <div class="hero-offers" aria-label="Penawaran iMersWAstore">
-            <span class="offer-pill">🎉 Gratis 1 Tahun</span>
-            <span class="offer-pill">💚 Lifetime Rp49.000</span>
-            <span class="offer-pill">🚀 Agency Unlimited Rp69.000</span>
+            <span class="offer-pill">🛍️ Kategori Produk</span>
+            <span class="offer-pill">🎟️ Kupon Diskon</span>
+            <span class="offer-pill">🚚 Ongkir Custom</span>
           </div>
 
           <div class="hero-actions">
@@ -1864,20 +1865,20 @@
         <div class="feature-grid">
           <article class="feature-card reveal">
             <div class="icon-box">🛒</div>
-            <h3>Toko Online Profesional</h3>
-            <p>Buat etalase produk yang rapi, modern, dan siap dipakai untuk jualan tanpa harus punya website sebelumnya.</p>
+            <h3>Katalog & Kategori Pintar</h3>
+            <p>Etalase produk dengan filter kategori yang rapi, varian produk lengkap, dan badge promo untuk menarik pembeli.</p>
+          </article>
+
+          <article class="feature-card reveal">
+            <div class="icon-box">🎟️</div>
+            <h3>Kupon Diskon & Ongkir</h3>
+            <p>Manjakan pelanggan dengan fitur kode kupon (persentase/nominal) dan atur tarif ongkos kirim sesuai area dengan mudah.</p>
           </article>
 
           <article class="feature-card reveal">
             <div class="icon-box">📱</div>
             <h3>Checkout ke WhatsApp</h3>
-            <p>Pelanggan cukup pilih produk lalu checkout. Pesanan langsung masuk ke WhatsApp bisnis Anda.</p>
-          </article>
-
-          <article class="feature-card reveal">
-            <div class="icon-box">🤖</div>
-            <h3>WhatsApp Gateway</h3>
-            <p>Terhubung dengan Fonnte dan WaPlus untuk notifikasi, invoice, follow up, dan broadcast promo.</p>
+            <p>Sistem menghitung Subtotal, Ongkir, dan Diskon secara otomatis sebelum pesanan dikirim ke WhatsApp bisnis Anda.</p>
           </article>
 
           <article class="feature-card wide-card reveal">
@@ -2119,12 +2120,12 @@
             <div class="price">Rp 49.000 <span>Lifetime</span></div>
             <ul class="simple-list">
               <li>Semua Fitur Starter</li>
-              <li>POS Kasir</li>
-              <li>Integrasi Fonnte</li>
-              <li>Integrasi WaPlus</li>
+              <li>POS Kasir Modern</li>
+              <li>Kupon Diskon & Ongkir</li>
+              <li>Integrasi Fonnte / WaPlus</li>
               <li>WhatsApp Automation</li>
+              <li>Halaman Legal & ToS</li>
               <li>Laporan Penjualan</li>
-              <li>Update Selamanya</li>
             </ul>
             <a href="#" onclick="openModal(event)" class="btn btn-secondary" style="color:var(--navy); background:white;">Pilih Lifetime</a>
           </article>
@@ -2364,6 +2365,12 @@
     // Jalankan fetch saat halaman selesai dimuat
     document.addEventListener("DOMContentLoaded", () => {
         loadMitra();
+        
+        // Auto-open modal jika dari halaman login mengklik "Daftar Gratis"
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('register') === 'true') {
+            setTimeout(() => openModal(), 300);
+        }
     });
 
     // ==========================================
