@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Masuk - iMersWAstore SaaS</title>
+    <!-- Judul bawaan dibikin netral, tidak ada jejak iMersWAstore -->
+    <title>Masuk - Panel Admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -40,7 +41,7 @@
                     <i data-lucide="store" class="w-6 h-6"></i>
                 </div>
                 <h2 class="text-2xl font-bold text-slate-900" id="formTitle">Masuk ke Akun</h2>
-                <p class="text-slate-500 text-sm mt-1" id="formSubtitle">Silakan masuk ke panel iMersWAstore Anda</p>
+                <p class="text-slate-500 text-sm mt-1" id="formSubtitle">Silakan masuk ke panel admin Anda</p>
             </div>
 
             <div id="alertBox" class="hidden mb-6 p-3 rounded-lg text-sm font-medium text-center"></div>
@@ -93,7 +94,7 @@
     <script>
         lucide.createIcons();
 
-        // URL Web App Google Apps Script lo yang BARU
+        // URL Web App Google Apps Script
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw5b-MqpGYCHgQzQtQrf2lIOoWs71CAARJBnRL4ALiJwxI5jbkNJ680zzXgv-KWWRES/exec';
 
         // ==========================================
@@ -107,9 +108,8 @@
                 .then(res => res.json())
                 .then(res => {
                     if (res.success && res.data && res.data.app_mode === 'single') {
-                        // Jika Mode Single Store aktif, matikan form pendaftaran dan info demo SaaS
+                        // Jika Mode Single Store aktif, matikan form pendaftaran
                         const footerReg = document.getElementById('footerRegister');
-                        
                         if(footerReg) footerReg.classList.add('hidden');
                     }
                 })
@@ -140,6 +140,9 @@
                         if (res.success) {
                             const store = res.data.find(s => s.slug === storeSlug);
                             if (store) {
+                                // MENGUBAH TITLE TAB BROWSER SECARA DINAMIS
+                                document.title = `Masuk - ${store.nama}`;
+
                                 // Ganti Nama & Subtitle
                                 document.getElementById('formTitle').innerText = `Masuk ke ${store.nama}`;
                                 document.getElementById('formSubtitle').innerText = "Silakan login ke panel admin Anda";
@@ -178,12 +181,13 @@
             const formSubtitle = document.getElementById('formSubtitle');
             const alertBox = document.getElementById('alertBox');
             
-            alertBox.classList.add('hidden'); // Sembunyikan alert saat ganti form
+            alertBox.classList.add('hidden'); 
             
             const urlParams = new URLSearchParams(window.location.search);
             const isStoreLogin = urlParams.has('t');
             
             if (type === 'forgot') {
+                document.title = "Lupa Password"; // Update title jadi Lupa Password
                 loginForm.classList.add('hidden');
                 forgotForm.classList.remove('hidden');
                 formTitle.innerText = "Lupa Password";
@@ -191,11 +195,13 @@
             } else {
                 forgotForm.classList.add('hidden');
                 loginForm.classList.remove('hidden');
+                
                 if (isStoreLogin) {
-                    loadStoreBranding(); // Panggil ulang untuk mengembalikan teks branding dinamis
+                    loadStoreBranding(); // Otomatis nge-set title kembali ke nama toko
                 } else {
+                    document.title = "Masuk - Panel Admin"; // Netral
                     formTitle.innerText = "Masuk ke Akun";
-                    formSubtitle.innerText = "Silakan masuk ke panel iMersWAstore Anda";
+                    formSubtitle.innerText = "Silakan masuk ke panel admin Anda";
                 }
             }
         }
@@ -218,7 +224,6 @@
             const btnLoader = document.getElementById('btnLoginLoader');
             const btnLogin = document.getElementById('btnLogin');
             
-            // Set Loading UI
             btnLogin.disabled = true;
             btnText.innerText = "Memverifikasi...";
             btnLoader.classList.remove('hidden');
@@ -234,10 +239,8 @@
                 .then(res => {
                     if (res.success) {
                         showAlert(res.message, true);
-                        // Simpan Sesi di Browser
                         localStorage.setItem('iMersWA_User', JSON.stringify(res.data));
                         
-                        // Redirect ke Dashboard (dengan pengaman preview window)
                         setTimeout(() => { 
                             if (window.location.protocol !== 'blob:' && window.location.protocol !== 'data:' && window.self === window.top) {
                                 window.location.href = 'dashboard.html'; 
@@ -292,7 +295,6 @@
                     btnLoader.classList.add('hidden');
                     if(res.success) {
                         document.getElementById('forgotForm').reset();
-                        // Otomatis kembali ke form login setelah 3 detik
                         setTimeout(() => toggleForm('login'), 3500);
                     }
                 })
