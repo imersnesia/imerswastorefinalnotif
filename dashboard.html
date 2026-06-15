@@ -86,7 +86,8 @@
                         auto_reply: 'Halo Kak, saya mau pesan...',
                         tutorial_data: '[]',
                         social_media: '[]',
-                        notif_templates: '{}'
+                        notif_templates: '{}',
+                        legal_settings: '{}'
                     };
                 }
             } else {
@@ -236,45 +237,6 @@
             </div>
 
             <!-- ========================================== -->
-            <!-- VIEW: VIDEO PANDUAN (TUTORIAL PLAYLIST) -->
-            <!-- ========================================== -->
-            <div id="view-tutorial" class="view-section hidden max-w-6xl mx-auto space-y-6">
-                <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
-                    <div>
-                        <h2 class="text-xl font-bold text-slate-800 mb-1">Video Panduan</h2>
-                        <p class="text-sm text-slate-500">Pelajari cara menggunakan sistem dan memaksimalkan penjualan Anda.</p>
-                    </div>
-                    <div class="w-12 h-12 rounded-xl bg-red-50 text-red-600 flex items-center justify-center shrink-0">
-                        <i data-lucide="youtube" class="w-6 h-6"></i>
-                    </div>
-                </div>
-
-                <div class="flex flex-col lg:flex-row gap-6">
-                    <!-- Kiri: Video Player -->
-                    <div class="flex-1 bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
-                        <div class="aspect-video bg-slate-900 w-full relative">
-                            <iframe id="tutorialIframe" class="absolute inset-0 w-full h-full" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                        </div>
-                        <div class="p-6">
-                            <h3 class="font-bold text-lg text-slate-800">Materi Pembelajaran</h3>
-                            <p class="text-sm text-slate-500 mt-1">Silakan pilih video dari daftar putar di samping untuk mulai belajar.</p>
-                        </div>
-                    </div>
-
-                    <!-- Kanan: Playlist -->
-                    <div class="w-full lg:w-80 shrink-0 bg-white rounded-xl border border-slate-200 shadow-sm flex flex-col h-[400px] lg:h-auto max-h-[600px]">
-                        <div class="p-5 border-b border-slate-100 bg-slate-50 rounded-t-xl shrink-0">
-                            <h3 class="font-bold text-slate-800 flex items-center gap-2"><i data-lucide="list-video" class="w-5 h-5 text-emerald-500"></i> Daftar Putar</h3>
-                        </div>
-                        <div class="flex-1 overflow-y-auto" id="tutorialPlaylist">
-                            <!-- Diisi oleh JS -->
-                            <div class="text-center text-slate-400 text-sm p-8">Memuat daftar video...</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ========================================== -->
             <!-- VIEW: MANAJEMEN USER (Hanya Admin/Agency)-->
             <!-- ========================================== -->
             <div id="view-users" class="view-section hidden max-w-6xl mx-auto space-y-6">
@@ -326,7 +288,7 @@
                     <table class="w-full text-left text-sm whitespace-nowrap">
                         <thead class="bg-slate-50 text-slate-500 font-semibold border-b border-slate-200">
                             <tr>
-                                <th class="px-6 py-4">Produk</th>
+                                <th class="px-6 py-4">Produk & Kategori</th>
                                 <th class="px-6 py-4">Harga</th>
                                 <th class="px-6 py-4">Stok / Varian</th>
                                 <th class="px-6 py-4 text-right">Aksi</th>
@@ -336,6 +298,96 @@
                             <tr>
                                 <td colspan="4" class="p-8 text-center text-slate-400">Loading data...</td>
                             </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- VIEW: KATEGORI PRODUK -->
+            <!-- ========================================== -->
+            <div id="view-kategori" class="view-section hidden max-w-6xl mx-auto space-y-6">
+                <div class="flex justify-between items-center bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                    <div>
+                        <h2 class="text-xl font-bold text-slate-800">Kategori Produk</h2>
+                        <p class="text-sm text-slate-500">Kelompokkan produk Anda untuk memudahkan pelanggan mencari barang.</p>
+                    </div>
+                    <button onclick="openCategoryModal()" class="bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-sm transition-colors flex items-center gap-2">
+                        <i data-lucide="plus" class="w-4 h-4"></i> Tambah Kategori
+                    </button>
+                </div>
+                <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-x-auto">
+                    <table class="w-full text-left text-sm whitespace-nowrap">
+                        <thead class="bg-slate-50 text-slate-500 font-semibold border-b border-slate-200">
+                            <tr>
+                                <th class="px-6 py-4 w-20">Urutan</th>
+                                <th class="px-6 py-4">Nama Kategori</th>
+                                <th class="px-6 py-4">Status Tampil</th>
+                                <th class="px-6 py-4 text-right">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100" id="categoryTableBody">
+                            <tr><td colspan="4" class="p-8 text-center text-slate-400">Loading data...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- VIEW: KUPON DISKON -->
+            <!-- ========================================== -->
+            <div id="view-kupon" class="view-section hidden max-w-6xl mx-auto space-y-6">
+                <div class="flex justify-between items-center bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                    <div>
+                        <h2 class="text-xl font-bold text-slate-800">Kupon Diskon</h2>
+                        <p class="text-sm text-slate-500">Buat kode promo untuk menarik pelanggan berbelanja lebih banyak.</p>
+                    </div>
+                    <button onclick="openCouponModal()" class="bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-sm transition-colors flex items-center gap-2">
+                        <i data-lucide="plus" class="w-4 h-4"></i> Buat Kupon
+                    </button>
+                </div>
+                <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-x-auto">
+                    <table class="w-full text-left text-sm whitespace-nowrap">
+                        <thead class="bg-slate-50 text-slate-500 font-semibold border-b border-slate-200">
+                            <tr>
+                                <th class="px-6 py-4">Kode Kupon</th>
+                                <th class="px-6 py-4">Nilai Diskon</th>
+                                <th class="px-6 py-4">Min. Belanja</th>
+                                <th class="px-6 py-4">Status</th>
+                                <th class="px-6 py-4 text-right">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100" id="couponTableBody">
+                            <tr><td colspan="5" class="p-8 text-center text-slate-400">Loading data...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- VIEW: ONGKIR MANUAL -->
+            <!-- ========================================== -->
+            <div id="view-ongkir" class="view-section hidden max-w-6xl mx-auto space-y-6">
+                <div class="flex justify-between items-center bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                    <div>
+                        <h2 class="text-xl font-bold text-slate-800">Tarif Pengiriman (Manual)</h2>
+                        <p class="text-sm text-slate-500">Atur area pengiriman dan tarif ongkos kirim secara manual untuk checkout.</p>
+                    </div>
+                    <button onclick="openShippingModal()" class="bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-sm transition-colors flex items-center gap-2">
+                        <i data-lucide="plus" class="w-4 h-4"></i> Tambah Area
+                    </button>
+                </div>
+                <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-x-auto">
+                    <table class="w-full text-left text-sm whitespace-nowrap">
+                        <thead class="bg-slate-50 text-slate-500 font-semibold border-b border-slate-200">
+                            <tr>
+                                <th class="px-6 py-4">Nama Area / Layanan Pengiriman</th>
+                                <th class="px-6 py-4">Tarif Ongkos Kirim</th>
+                                <th class="px-6 py-4 text-right">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100" id="shippingTableBody">
+                            <tr><td colspan="3" class="p-8 text-center text-slate-400">Loading data...</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -357,7 +409,7 @@
                                 <th class="px-6 py-4">Order ID & Waktu</th>
                                 <th class="px-6 py-4">Pelanggan & Kontak</th>
                                 <th class="px-6 py-4">Rincian Barang</th>
-                                <th class="px-6 py-4">Total Tagihan</th>
+                                <th class="px-6 py-4">Rincian Biaya</th>
                                 <th class="px-6 py-4">Status</th>
                                 <th class="px-6 py-4 text-right">Aksi</th>
                             </tr>
@@ -404,10 +456,10 @@
                         </div>
 
                         <!-- Summary & Checkout -->
-                        <div class="p-4 border-t border-slate-100 bg-slate-50 rounded-b-xl">
-                            <div class="flex justify-between items-center mb-4">
-                                <span class="text-slate-500 font-medium">Total Tagihan</span>
-                                <span class="text-2xl font-bold text-slate-800" id="cartTotal">Rp 0</span>
+                        <div class="p-4 border-t border-slate-100 bg-slate-50 rounded-b-xl space-y-3">
+                            <div class="flex justify-between items-center text-sm font-medium text-slate-600">
+                                <span>Subtotal</span>
+                                <span id="cartSubtotalVal">Rp 0</span>
                             </div>
                             <!-- Panggil Checkout Modal -->
                             <button onclick="openCheckoutModal()" class="w-full py-3 bg-slate-900 text-white font-bold rounded-lg hover:bg-slate-800 shadow-lg flex justify-center items-center gap-2 transition-all">
@@ -416,6 +468,45 @@
                         </div>
                     </div>
 
+                </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- VIEW: VIDEO PANDUAN (TUTORIAL PLAYLIST) -->
+            <!-- ========================================== -->
+            <div id="view-tutorial" class="view-section hidden max-w-6xl mx-auto space-y-6">
+                <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+                    <div>
+                        <h2 class="text-xl font-bold text-slate-800 mb-1">Video Panduan</h2>
+                        <p class="text-sm text-slate-500">Pelajari cara menggunakan sistem dan memaksimalkan penjualan Anda.</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-red-50 text-red-600 flex items-center justify-center shrink-0">
+                        <i data-lucide="youtube" class="w-6 h-6"></i>
+                    </div>
+                </div>
+
+                <div class="flex flex-col lg:flex-row gap-6">
+                    <!-- Kiri: Video Player -->
+                    <div class="flex-1 bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
+                        <div class="aspect-video bg-slate-900 w-full relative">
+                            <iframe id="tutorialIframe" class="absolute inset-0 w-full h-full" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="font-bold text-lg text-slate-800">Materi Pembelajaran</h3>
+                            <p class="text-sm text-slate-500 mt-1">Silakan pilih video dari daftar putar di samping untuk mulai belajar.</p>
+                        </div>
+                    </div>
+
+                    <!-- Kanan: Playlist -->
+                    <div class="w-full lg:w-80 shrink-0 bg-white rounded-xl border border-slate-200 shadow-sm flex flex-col h-[400px] lg:h-auto max-h-[600px]">
+                        <div class="p-5 border-b border-slate-100 bg-slate-50 rounded-t-xl shrink-0">
+                            <h3 class="font-bold text-slate-800 flex items-center gap-2"><i data-lucide="list-video" class="w-5 h-5 text-emerald-500"></i> Daftar Putar</h3>
+                        </div>
+                        <div class="flex-1 overflow-y-auto" id="tutorialPlaylist">
+                            <!-- Diisi oleh JS -->
+                            <div class="text-center text-slate-400 text-sm p-8">Memuat daftar video...</div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -513,7 +604,7 @@
                             <p class="text-[10px] text-slate-500 mt-1">Jika dikonfigurasi, struk POS dan Lupa Password akan dikirim otomatis ke WhatsApp pelanggan.</p>
                         </div>
 
-                        <!-- FITUR TEMPLATE NOTIFIKASI DINAMIS (BARU) -->
+                        <!-- FITUR TEMPLATE NOTIFIKASI DINAMIS -->
                         <h4 class="font-bold text-slate-700 mt-6 border-b pb-1 flex items-center gap-2"><i data-lucide="message-square-dashed" class="w-5 h-5 text-indigo-500"></i> Template Notifikasi WhatsApp</h4>
                         <p class="text-[10px] text-slate-500 mb-3">Sesuaikan isi pesan yang akan dikirim otomatis oleh bot WA Anda. Gunakan tag [KATA] agar berubah otomatis jadi data asli.</p>
                         
@@ -530,8 +621,33 @@
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-slate-700 mb-1">Pesan Struk Order (Checkout)</label>
-                                <p class="text-[10px] text-slate-500 mb-1">Tag tersedia: <b class="text-indigo-600">[NAMA_PEMBELI], [ORDER_ID], [TOTAL], [METODE_BAYAR], [RINCIAN_ORDER]</b></p>
-                                <textarea id="setNotifCheckout" rows="4" class="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:border-emerald-500 text-sm" placeholder="Terima kasih [NAMA_PEMBELI], total belanja Anda [TOTAL]..."></textarea>
+                                <p class="text-[10px] text-slate-500 mb-1">Tag tersedia: <b class="text-indigo-600">[NAMA_PEMBELI], [ORDER_ID], [SUBTOTAL], [ONGKIR], [DISKON], [GRAND_TOTAL], [METODE_BAYAR], [KURIR], [RINCIAN_ORDER]</b></p>
+                                <textarea id="setNotifCheckout" rows="4" class="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:border-emerald-500 text-sm" placeholder="Terima kasih [NAMA_PEMBELI], total belanja Anda [GRAND_TOTAL]..."></textarea>
+                            </div>
+                        </div>
+
+                        <!-- FITUR HALAMAN LEGAL (ToS & Privacy) -->
+                        <h4 class="font-bold text-slate-700 mt-6 border-b pb-1 flex items-center gap-2"><i data-lucide="scale" class="w-5 h-5 text-slate-500"></i> Halaman Legal & Kebijakan Toko</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 pt-2">
+                            <div class="space-y-2">
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-700 mb-1">Terms of Service (Syarat Ketentuan)</label>
+                                    <select id="setTosActive" class="w-full px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:border-emerald-500 text-sm bg-white mb-2">
+                                        <option value="off">Mati (Sembunyikan dari Footer)</option>
+                                        <option value="on">Aktif (Tampilkan di Footer)</option>
+                                    </select>
+                                    <textarea id="setTosContent" rows="6" class="w-full px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:border-emerald-500 text-sm" placeholder="Masukkan Syarat dan Ketentuan layanan toko Anda di sini..."></textarea>
+                                </div>
+                            </div>
+                            <div class="space-y-2">
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-700 mb-1">Privacy Policy (Kebijakan Privasi)</label>
+                                    <select id="setPrivacyActive" class="w-full px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:border-emerald-500 text-sm bg-white mb-2">
+                                        <option value="off">Mati (Sembunyikan dari Footer)</option>
+                                        <option value="on">Aktif (Tampilkan di Footer)</option>
+                                    </select>
+                                    <textarea id="setPrivacyContent" rows="6" class="w-full px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:border-emerald-500 text-sm" placeholder="Masukkan Kebijakan Privasi pengguna di sini..."></textarea>
+                                </div>
                             </div>
                         </div>
 
@@ -664,12 +780,20 @@
                     </button>
                 </div>
                 
-                <form id="productForm" class="p-6 space-y-4">
+                <form id="productForm" class="p-6 space-y-4 max-h-[80vh] overflow-y-auto">
                     <input type="hidden" id="prodId" value="">
                     
                     <div>
                         <label class="block text-sm font-medium text-slate-700 mb-1">Nama Produk</label>
                         <input type="text" id="prodName" required class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-emerald-500 text-sm">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Kategori Produk</label>
+                        <select id="prodCategory" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-emerald-500 text-sm bg-white">
+                            <option value="">-- Tanpa Kategori --</option>
+                            <!-- Diisi JS -->
+                        </select>
                     </div>
                     
                     <div class="grid grid-cols-2 gap-4">
@@ -742,34 +866,167 @@
         </div>
     </div>
 
+    <!-- Modal Kategori -->
+    <div id="categoryModal" class="fixed inset-0 z-[100] hidden">
+        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="closeModal('categoryModal')"></div>
+        <div class="flex items-center justify-center min-h-screen px-4 py-8">
+            <div class="relative bg-white rounded-2xl shadow-xl w-full max-w-sm overflow-hidden z-10">
+                <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+                    <h3 class="font-bold text-slate-800" id="categoryModalTitle">Tambah Kategori</h3>
+                    <button onclick="closeModal('categoryModal')" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+                </div>
+                <form id="categoryForm" class="p-6 space-y-4">
+                    <input type="hidden" id="catId" value="">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Nama Kategori</label>
+                        <input type="text" id="catName" required class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-emerald-500 text-sm">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Urutan</label>
+                            <input type="number" id="catSort" value="0" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-emerald-500 text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Status</label>
+                            <select id="catStatus" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-emerald-500 text-sm bg-white">
+                                <option value="true">Aktif</option><option value="false">Mati (Hidden)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" id="btnSaveCat" class="w-full py-3 bg-emerald-500 text-white font-bold rounded-lg mt-2 flex justify-center items-center">
+                        <span id="btnSaveCatText">Simpan Kategori</span><i data-lucide="loader-2" id="btnSaveCatLoader" class="w-4 h-4 ml-2 animate-spin hidden"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Kupon -->
+    <div id="couponModal" class="fixed inset-0 z-[100] hidden">
+        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="closeModal('couponModal')"></div>
+        <div class="flex items-center justify-center min-h-screen px-4 py-8">
+            <div class="relative bg-white rounded-2xl shadow-xl w-full max-w-sm overflow-hidden z-10">
+                <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+                    <h3 class="font-bold text-slate-800" id="couponModalTitle">Buat Kupon Diskon</h3>
+                    <button onclick="closeModal('couponModal')" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+                </div>
+                <form id="couponForm" class="p-6 space-y-4">
+                    <input type="hidden" id="cupId" value="">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Kode Kupon</label>
+                        <input type="text" id="cupCode" required class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-emerald-500 text-sm uppercase font-mono" placeholder="PROMO2026">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Tipe Diskon</label>
+                            <select id="cupType" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-emerald-500 text-sm bg-white">
+                                <option value="percent">Persen (%)</option><option value="fixed">Nominal (Rp)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Nilai Diskon</label>
+                            <input type="number" id="cupValue" required class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-emerald-500 text-sm" placeholder="10">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Minimal Belanja (Rp)</label>
+                        <input type="number" id="cupMin" value="0" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-emerald-500 text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Status Kupon</label>
+                        <select id="cupStatus" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-emerald-500 text-sm bg-white">
+                            <option value="true">Aktif</option><option value="false">Tidak Aktif</option>
+                        </select>
+                    </div>
+                    <button type="submit" id="btnSaveCup" class="w-full py-3 bg-emerald-500 text-white font-bold rounded-lg mt-2 flex justify-center items-center">
+                        <span id="btnSaveCupText">Simpan Kupon</span><i data-lucide="loader-2" id="btnSaveCupLoader" class="w-4 h-4 ml-2 animate-spin hidden"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Ongkir -->
+    <div id="shippingModal" class="fixed inset-0 z-[100] hidden">
+        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="closeModal('shippingModal')"></div>
+        <div class="flex items-center justify-center min-h-screen px-4 py-8">
+            <div class="relative bg-white rounded-2xl shadow-xl w-full max-w-sm overflow-hidden z-10">
+                <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+                    <h3 class="font-bold text-slate-800" id="shippingModalTitle">Atur Tarif Pengiriman</h3>
+                    <button onclick="closeModal('shippingModal')" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+                </div>
+                <form id="shippingForm" class="p-6 space-y-4">
+                    <input type="hidden" id="shpId" value="">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Area / Jasa Kirim</label>
+                        <input type="text" id="shpArea" required class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-emerald-500 text-sm" placeholder="Contoh: Dalam Kota / J&T Express">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Tarif Ongkos Kirim (Rp)</label>
+                        <input type="number" id="shpRate" required class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-emerald-500 text-sm" placeholder="10000">
+                    </div>
+                    <button type="submit" id="btnSaveShp" class="w-full py-3 bg-emerald-500 text-white font-bold rounded-lg mt-2 flex justify-center items-center">
+                        <span id="btnSaveShpText">Simpan Tarif</span><i data-lucide="loader-2" id="btnSaveShpLoader" class="w-4 h-4 ml-2 animate-spin hidden"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal Checkout Kasir POS (Pilih Pembayaran & Kembalian) -->
     <div id="checkoutModal" class="fixed inset-0 z-[100] hidden">
         <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="closeModal('checkoutModal')"></div>
         <div class="flex items-center justify-center min-h-screen px-4 py-8">
-            <div class="relative bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden z-10 p-6 space-y-5">
+            <div class="relative bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden z-10 p-6 space-y-4">
                 
                 <div class="flex justify-between items-center border-b pb-3">
                     <h3 class="font-bold text-xl text-slate-800">Selesaikan Pembayaran</h3>
-                    <button onclick="closeModal('checkoutModal')" class="text-slate-400 hover:text-slate-600">
-                        <i data-lucide="x" class="w-5 h-5"></i>
-                    </button>
+                    <button onclick="closeModal('checkoutModal')" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
                 </div>
                 
-                <div class="bg-slate-50 p-4 rounded-xl text-center border border-slate-100">
-                    <p class="text-xs text-slate-500 uppercase tracking-widest font-bold">Total Tagihan</p>
-                    <div class="text-3xl font-black text-slate-800" id="coTotalTagihan">Rp 0</div>
+                <!-- Rincian Biaya (Orchestrator Style) -->
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 space-y-3">
+                    <div class="flex justify-between items-center text-sm font-bold text-slate-600">
+                        <span>Subtotal Belanja:</span><span id="coSubtotal">Rp 0</span>
+                    </div>
+
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Pengiriman / Ongkir</label>
+                        <select id="coOngkir" class="w-full px-2 py-1.5 border border-slate-200 rounded text-sm bg-white focus:outline-none" onchange="recalculatePOS()">
+                            <option value="">-- Tanpa Ongkir / Ambil Sendiri --</option>
+                            <!-- Diisi via JS -->
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Kode Kupon</label>
+                        <div class="flex gap-2">
+                            <input type="text" id="coKuponCode" class="flex-1 px-2 py-1.5 border border-slate-200 rounded text-sm uppercase" placeholder="KODE...">
+                            <button type="button" onclick="applyPOSCoupon()" id="btnApplyCup" class="bg-slate-800 text-white px-3 rounded text-xs font-bold shrink-0">Terapkan</button>
+                        </div>
+                        <p id="coKuponMsg" class="text-[10px] mt-1 font-bold hidden"></p>
+                    </div>
+
+                    <div class="border-t border-slate-200 pt-3 space-y-1">
+                        <div class="flex justify-between text-xs text-slate-500"><span>Ongkos Kirim:</span><span id="coOngkirVal">Rp 0</span></div>
+                        <div class="flex justify-between text-xs text-emerald-600"><span>Diskon:</span><span id="coDiskonVal">-Rp 0</span></div>
+                        <div class="flex justify-between items-end mt-2 pt-2 border-t border-slate-200">
+                            <span class="text-sm font-bold text-slate-800">Grand Total:</span>
+                            <span class="text-2xl font-black text-slate-900" id="coGrandTotal">Rp 0</span>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-1">Nama Pembeli (Opsional)</label>
-                        <input type="text" id="coNama" class="w-full px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:border-emerald-500 text-sm" placeholder="Bapak/Ibu Budi">
-                    </div>
-                    
-                    <div>
-                        <label class="block text-sm font-bold text-emerald-600 mb-1">No WA Pembeli (Opsional, untuk Struk Digital)</label>
-                        <input type="tel" id="coWa" class="w-full px-3 py-2 border border-emerald-200 rounded-lg focus:outline-none focus:border-emerald-500 text-sm" placeholder="6281234...">
-                        <p class="text-[10px] text-slate-500 mt-0.5">Nota akan dikirim otomatis ke WA pelanggan jika fitur Gateway aktif.</p>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700 mb-1">Nama Pembeli (Opsional)</label>
+                            <input type="text" id="coNama" class="w-full px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:border-emerald-500 text-sm" placeholder="Bapak/Ibu Budi">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-emerald-600 mb-1">No WA Pembeli (Opsional, untuk Struk Digital)</label>
+                            <input type="tel" id="coWa" class="w-full px-3 py-2 border border-emerald-200 rounded-lg focus:outline-none focus:border-emerald-500 text-sm" placeholder="6281234...">
+                        </div>
                     </div>
                     
                     <div>
@@ -782,13 +1039,13 @@
                     </div>
 
                     <!-- Area Kalkulator Kasir -->
-                    <div id="cashArea" class="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                        <label class="block text-sm font-bold text-slate-700 mb-1">Uang Diterima (Rp)</label>
-                        <input type="number" id="coUangDiterima" class="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-lg font-bold focus:outline-none focus:border-emerald-500" oninput="hitungKembalian()">
+                    <div id="cashArea" class="bg-blue-50 p-4 rounded-xl border border-blue-100">
+                        <label class="block text-sm font-bold text-blue-800 mb-1">Uang Diterima (Rp)</label>
+                        <input type="number" id="coUangDiterima" class="w-full px-3 py-2.5 border border-blue-200 rounded-lg text-lg font-bold focus:outline-none focus:border-emerald-500" oninput="hitungKembalian()">
                         
-                        <div class="flex justify-between items-center mt-3 pt-3 border-t border-slate-200">
-                            <span class="text-sm font-bold text-slate-500">Kembalian:</span>
-                            <span class="text-xl font-black text-emerald-600" id="coKembalian">Rp 0</span>
+                        <div class="flex justify-between items-center mt-3 pt-3 border-t border-blue-200">
+                            <span class="text-sm font-bold text-blue-600">Kembalian:</span>
+                            <span class="text-xl font-black text-blue-700" id="coKembalian">Rp 0</span>
                         </div>
                     </div>
                 </div>
@@ -884,7 +1141,11 @@
         <div id="strItems"></div>
         
         <p style="margin:5px 0;">--------------------------------</p>
-        <p style="margin:0; font-weight:bold; display:flex; justify-content:space-between;"><span>TOTAL</span> <span id="strTotal"></span></p>
+        <p style="margin:0; display:flex; justify-content:space-between;"><span>Subtotal</span> <span id="strSubtotal"></span></p>
+        <p style="margin:0; display:flex; justify-content:space-between;"><span>Ongkir</span> <span id="strOngkir"></span></p>
+        <p style="margin:0; display:flex; justify-content:space-between;"><span>Diskon</span> <span id="strDiskon"></span></p>
+        <p style="margin:0; font-weight:bold; display:flex; justify-content:space-between;"><span>GRAND TOTAL</span> <span id="strTotal"></span></p>
+        <p style="margin:5px 0;">--------------------------------</p>
         <p style="margin:0; display:flex; justify-content:space-between;"><span>Metode</span> <span id="strMethod"></span></p>
         <p style="margin:0; display:flex; justify-content:space-between;"><span>Tunai</span> <span id="strTunai"></span></p>
         <p style="margin:0; display:flex; justify-content:space-between;"><span>Kembali</span> <span id="strKembali"></span></p>
@@ -910,9 +1171,17 @@
         let globalProducts = [];
         let globalOrders = [];
         let globalUsers = [];
+        let globalCategories = [];
+        let globalCoupons = [];
+        let globalShipping = [];
         let appSettings = { app_mode: 'saas', show_landing_page: 'on' }; // Variabel setting global
+        
         let cart = [];
-        let totalCartValue = 0;
+        let posSubtotal = 0;
+        let posOngkirCost = 0;
+        let posDiskonVal = 0;
+        let posGrandTotal = 0;
+        
         let salesChartInstance = null;
         let topProductsChartInstance = null;
 
@@ -1057,6 +1326,19 @@
             const setNotifCheckout = document.getElementById('setNotifCheckout');
             if (setNotifCheckout) setNotifCheckout.value = notifData.checkout_msg || '';
 
+            // SETUP LEGAL SETTINGS (BARU)
+            let legalData = {};
+            try {
+                if(currentUser.legal_settings && currentUser.legal_settings !== '') {
+                    legalData = JSON.parse(currentUser.legal_settings);
+                }
+            } catch(e) { console.error("Error parse legal settings JSON:", e); }
+
+            if (document.getElementById('setTosActive')) document.getElementById('setTosActive').value = legalData.tos_active || 'off';
+            if (document.getElementById('setTosContent')) document.getElementById('setTosContent').value = legalData.tos_content || '';
+            if (document.getElementById('setPrivacyActive')) document.getElementById('setPrivacyActive').value = legalData.privacy_active || 'off';
+            if (document.getElementById('setPrivacyContent')) document.getElementById('setPrivacyContent').value = legalData.privacy_content || '';
+
             // Fetch Global Setting dulu sebelum render menu
             await fetchGlobalSettings();
             
@@ -1078,6 +1360,9 @@
             }
             
             menus += createMenuHTML('prod', 'package', 'Katalog Produk');
+            menus += createMenuHTML('kategori', 'tags', 'Kategori Produk');
+            menus += createMenuHTML('kupon', 'ticket', 'Kupon Diskon');
+            menus += createMenuHTML('ongkir', 'truck', 'Ongkos Kirim');
             menus += createMenuHTML('order', 'shopping-cart', 'Pesanan Masuk');
             menus += createMenuHTML('pos', 'calculator', 'Kasir POS');
             
@@ -1179,6 +1464,29 @@
         async function fetchDashboardData() {
             if (!currentUser) return;
             
+            // Fetch Kategori
+            const resCat = await apiCall('get_categories', {id_user_toko: currentUser.id});
+            if(resCat.success) { 
+                globalCategories = resCat.data; 
+                renderCategories(); 
+                populateCategorySelects(); 
+            }
+
+            // Fetch Kupon
+            const resCup = await apiCall('get_coupons', {id_user_toko: currentUser.id});
+            if(resCup.success) { 
+                globalCoupons = resCup.data; 
+                renderCoupons(); 
+            }
+
+            // Fetch Ongkir
+            const resShp = await apiCall('get_shipping', {id_user_toko: currentUser.id});
+            if(resShp.success) { 
+                globalShipping = resShp.data; 
+                renderShipping(); 
+                populateShippingSelects(); 
+            }
+
             // Get Products
             const resProd = await apiCall('get_products', { id_user_toko: currentUser.id });
             if (resProd.success) {
@@ -1478,6 +1786,12 @@
             }
             
             tbody.innerHTML = globalProducts.map(p => {
+                let catName = '-';
+                if(p.category_id) { 
+                    const cat = globalCategories.find(c => c.id === p.category_id); 
+                    if(cat) catName = cat.name; 
+                }
+
                 let badgeHtml = p.badge ? `<span class="bg-red-100 text-red-600 px-1.5 py-0.5 rounded text-[10px] font-bold mt-1 inline-block">${p.badge}</span>` : '';
                 
                 // Cek apakah punya varian
@@ -1495,7 +1809,7 @@
                         <img src="${p.img || 'https://placehold.co/100x100/e2e8f0/64748b?text=Box'}" class="w-10 h-10 rounded-lg object-cover">
                         <div>
                             <div class="font-bold text-slate-800 flex flex-col items-start">${p.name} ${badgeHtml}</div>
-                            <div class="text-[10px] text-slate-400 w-48 truncate mt-1">${p.desc || '-'}</div>
+                            <div class="text-[10px] text-slate-400 mt-1">Kategori: ${catName}</div>
                         </div>
                     </td>
                     <td class="px-6 py-4">
@@ -1514,6 +1828,92 @@
             }).join('');
         }
 
+        // Render Dropdown Kategori
+        function populateCategorySelects() {
+            const sel = document.getElementById('prodCategory'); 
+            if(!sel) return;
+            let opts = '<option value="">-- Tanpa Kategori --</option>';
+            globalCategories.forEach(c => { 
+                if(String(c.is_active)==='true') {
+                    opts += `<option value="${c.id}">${c.name}</option>`; 
+                }
+            });
+            sel.innerHTML = opts;
+        }
+
+        // Render Kategori Table
+        function renderCategories() {
+            const tbody = document.getElementById('categoryTableBody');
+            if(globalCategories.length === 0) { 
+                tbody.innerHTML = `<tr><td colspan="4" class="p-8 text-center text-slate-500">Belum ada Kategori</td></tr>`; 
+                return; 
+            }
+            
+            tbody.innerHTML = globalCategories.map(c => `
+                <tr class="border-b border-slate-100 hover:bg-slate-50">
+                    <td class="px-6 py-3 font-mono text-sm">${c.sort}</td>
+                    <td class="px-6 py-3 font-bold text-slate-800">${c.name}</td>
+                    <td class="px-6 py-3">${String(c.is_active)==='true' ? '<span class="text-emerald-600 bg-emerald-50 px-2 py-1 rounded text-[10px] font-bold">AKTIF</span>' : '<span class="text-slate-500 bg-slate-100 px-2 py-1 rounded text-[10px] font-bold">MATI</span>'}</td>
+                    <td class="px-6 py-3 text-right">
+                        <button onclick="openCategoryModal('${c.id}')" class="text-blue-500 hover:text-blue-700 text-sm font-medium mr-3">Edit</button>
+                        <button onclick="deleteCategory('${c.id}')" class="text-red-500 hover:text-red-700 text-sm font-medium">Hapus</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Render Kupon Table
+        function renderCoupons() {
+            const tbody = document.getElementById('couponTableBody');
+            if(globalCoupons.length === 0) { 
+                tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-slate-500">Belum ada Kupon Diskon</td></tr>`; 
+                return; 
+            }
+            
+            tbody.innerHTML = globalCoupons.map(c => `
+                <tr class="border-b border-slate-100 hover:bg-slate-50">
+                    <td class="px-6 py-3 font-bold text-slate-800 uppercase tracking-widest">${c.code}</td>
+                    <td class="px-6 py-3 text-sm text-emerald-600 font-bold">${c.type === 'percent' ? c.value + '%' : formatRupiah(c.value)}</td>
+                    <td class="px-6 py-3 text-sm text-slate-600">${formatRupiah(c.min_purchase)}</td>
+                    <td class="px-6 py-3">${String(c.is_active)==='true' ? '<span class="text-emerald-600 bg-emerald-50 px-2 py-1 rounded text-[10px] font-bold">AKTIF</span>' : '<span class="text-slate-500 bg-slate-100 px-2 py-1 rounded text-[10px] font-bold">MATI</span>'}</td>
+                    <td class="px-6 py-3 text-right">
+                        <button onclick="openCouponModal('${c.id}')" class="text-blue-500 hover:text-blue-700 text-sm font-medium mr-3">Edit</button>
+                        <button onclick="deleteCoupon('${c.id}')" class="text-red-500 hover:text-red-700 text-sm font-medium">Hapus</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Render Ongkir Table
+        function renderShipping() {
+            const tbody = document.getElementById('shippingTableBody');
+            if(globalShipping.length === 0) { 
+                tbody.innerHTML = `<tr><td colspan="3" class="p-8 text-center text-slate-500">Belum ada pengaturan tarif pengiriman</td></tr>`; 
+                return; 
+            }
+            
+            tbody.innerHTML = globalShipping.map(c => `
+                <tr class="border-b border-slate-100 hover:bg-slate-50">
+                    <td class="px-6 py-3 font-bold text-slate-800">${c.area}</td>
+                    <td class="px-6 py-3 text-sm text-emerald-600 font-bold">${formatRupiah(c.rate)}</td>
+                    <td class="px-6 py-3 text-right">
+                        <button onclick="openShippingModal('${c.id}')" class="text-blue-500 hover:text-blue-700 text-sm font-medium mr-3">Edit</button>
+                        <button onclick="deleteShipping('${c.id}')" class="text-red-500 hover:text-red-700 text-sm font-medium">Hapus</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function populateShippingSelects() {
+            const sel = document.getElementById('coOngkir'); 
+            if(!sel) return;
+            let opts = '<option value="">-- Tanpa Ongkir / Ambil Sendiri --</option>';
+            globalShipping.forEach(c => { 
+                opts += `<option value="${c.id}">${c.area} (+ ${formatRupiah(c.rate)})</option>`; 
+            });
+            sel.innerHTML = opts;
+        }
+
         // Render Orders (Tabel Pesanan Masuk)
         function renderOrders() {
             const tbody = document.getElementById('orderTableBody');
@@ -1522,25 +1922,23 @@
                 return;
             }
             
-            // Pastikan tabel headernya punya kolom "Aksi" jika belum ada
-            const thead = document.querySelector('#view-order table thead tr');
-            if (thead && thead.children.length === 5) {
-                const actionTh = document.createElement('th');
-                actionTh.className = "px-6 py-4 text-right";
-                actionTh.innerText = "Aksi";
-                thead.appendChild(actionTh);
-            }
-            
             tbody.innerHTML = globalOrders.map(o => {
                 let statusColor = o.status === 'Selesai' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700';
                 let dateStr = new Date(o.time).toLocaleString('id-ID');
                 
                 let itemsList = '';
                 try { 
-                    itemsList = JSON.parse(o.items).join(', '); 
+                    itemsList = JSON.parse(o.items).join('<br>'); 
                 } catch(e) { 
                     itemsList = o.items; 
                 }
+
+                let rincianBiaya = `
+                    <div class="text-[10px] text-slate-500">Subtotal: <span class="font-bold text-slate-700">${formatRupiah(o.subtotal || 0)}</span></div>
+                    <div class="text-[10px] text-slate-500">Ongkir: <span class="font-bold text-slate-700">${formatRupiah(o.ongkir || 0)}</span></div>
+                    <div class="text-[10px] text-slate-500">Diskon: <span class="font-bold text-red-500">-${formatRupiah(o.diskon || 0)}</span></div>
+                    <div class="text-[11px] font-bold text-slate-800 mt-1 border-t border-slate-100 pt-1">Total: ${formatRupiah(o.total)}</div>
+                `;
 
                 let actionBtns = '';
                 if (o.status === 'Baru') {
@@ -1562,11 +1960,8 @@
                         ${o.buyer || 'Walk-in Customer'}
                         <div class="text-[9px] text-slate-400">${o.wa || '-'}</div>
                     </td>
-                    <td class="px-6 py-4 text-xs text-slate-500 truncate max-w-[200px]">${itemsList}</td>
-                    <td class="px-6 py-4">
-                        <div class="font-bold text-slate-800">${formatRupiah(o.total)}</div>
-                        <div class="text-[9px] text-slate-400 font-bold uppercase">${o.method || 'Cash'}</div>
-                    </td>
+                    <td class="px-6 py-4 text-[10px] text-slate-600 leading-snug">${itemsList}</td>
+                    <td class="px-6 py-4">${rincianBiaya}</td>
                     <td class="px-6 py-4">
                         <span class="${statusColor} px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider">${o.status}</span>
                     </td>
@@ -1684,6 +2079,9 @@
                     const prodDescEl = document.getElementById('prodDesc');
                     if (prodDescEl) prodDescEl.value = p.desc || '';
 
+                    const prodCatEl = document.getElementById('prodCategory');
+                    if (prodCatEl) prodCatEl.value = p.category_id || '';
+
                     // Load Variants
                     let parsedVars = [];
                     try { if (p.variants && p.variants !== '') parsedVars = JSON.parse(p.variants); } catch(e){}
@@ -1714,7 +2112,8 @@
                 satuan: document.getElementById('prodSatuan') ? document.getElementById('prodSatuan').value : 'pcs',
                 badge: document.getElementById('prodBadge') ? document.getElementById('prodBadge').value : '',
                 gambar: document.getElementById('prodImg') ? document.getElementById('prodImg').value : '',
-                deskripsi: document.getElementById('prodDesc') ? document.getElementById('prodDesc').value : ''
+                deskripsi: document.getElementById('prodDesc') ? document.getElementById('prodDesc').value : '',
+                id_kategori: document.getElementById('prodCategory') ? document.getElementById('prodCategory').value : ''
             };
             
             // Tangkap Varian Data
@@ -1763,6 +2162,191 @@
                 fetchDashboardData();
             } else {
                 alert(res.message);
+            }
+        }
+
+        // --- CRUD KATEGORI ---
+        function openCategoryModal(id = null) {
+            const form = document.getElementById('categoryForm');
+            form.reset();
+            document.getElementById('catId').value = ''; 
+            document.getElementById('categoryModalTitle').innerText = 'Tambah Kategori';
+            
+            if (id) {
+                const c = globalCategories.find(x => x.id === id);
+                if (c) {
+                    document.getElementById('categoryModalTitle').innerText = 'Edit Kategori';
+                    document.getElementById('catId').value = c.id; 
+                    document.getElementById('catName').value = c.name; 
+                    document.getElementById('catSort').value = c.sort; 
+                    document.getElementById('catStatus').value = c.is_active; 
+                }
+            }
+            document.getElementById('categoryModal').classList.remove('hidden');
+        }
+
+        document.getElementById('categoryForm').addEventListener('submit', async(e) => {
+            e.preventDefault(); 
+            const isEdit = document.getElementById('catId').value !== '';
+            
+            document.getElementById('btnSaveCatText').innerText = 'Menyimpan...';
+            document.getElementById('btnSaveCatLoader').classList.remove('hidden');
+
+            const payload = { 
+                id_user_toko: currentUser.id, 
+                nama_kategori: document.getElementById('catName').value, 
+                sort_order: document.getElementById('catSort').value, 
+                is_active: document.getElementById('catStatus').value 
+            };
+
+            if (isEdit) {
+                payload.id_kategori = document.getElementById('catId').value;
+            }
+
+            const res = await apiCall(isEdit ? 'edit_category' : 'add_category', payload);
+            
+            document.getElementById('btnSaveCatText').innerText = 'Simpan Kategori';
+            document.getElementById('btnSaveCatLoader').classList.add('hidden');
+
+            if (res.success) { 
+                closeModal('categoryModal'); 
+                fetchDashboardData(); 
+            } else {
+                alert(res.message);
+            }
+        });
+
+        async function deleteCategory(id) { 
+            if (!confirm('Yakin hapus kategori ini?')) return; 
+            const res = await apiCall('delete_category', {id_kategori:id, id_user_toko: currentUser.id}); 
+            if (res.success) {
+                fetchDashboardData(); 
+            } else {
+                alert(res.message); 
+            }
+        }
+
+        // --- CRUD KUPON ---
+        function openCouponModal(id = null) {
+            const form = document.getElementById('couponForm');
+            form.reset(); 
+            document.getElementById('cupId').value = ''; 
+            document.getElementById('couponModalTitle').innerText = 'Buat Kupon';
+            
+            if (id) {
+                const c = globalCoupons.find(x => x.id === id);
+                if (c) { 
+                    document.getElementById('couponModalTitle').innerText = 'Edit Kupon'; 
+                    document.getElementById('cupId').value = c.id; 
+                    document.getElementById('cupCode').value = c.code; 
+                    document.getElementById('cupType').value = c.type; 
+                    document.getElementById('cupValue').value = c.value; 
+                    document.getElementById('cupMin').value = c.min_purchase; 
+                    document.getElementById('cupStatus').value = c.is_active; 
+                }
+            }
+            document.getElementById('couponModal').classList.remove('hidden');
+        }
+
+        document.getElementById('couponForm').addEventListener('submit', async(e) => {
+            e.preventDefault(); 
+            const isEdit = document.getElementById('cupId').value !== '';
+            
+            document.getElementById('btnSaveCupText').innerText = 'Menyimpan...';
+            document.getElementById('btnSaveCupLoader').classList.remove('hidden');
+
+            const payload = { 
+                id_user_toko: currentUser.id, 
+                kode_kupon: document.getElementById('cupCode').value, 
+                tipe_diskon: document.getElementById('cupType').value, 
+                nilai_diskon: document.getElementById('cupValue').value, 
+                min_belanja: document.getElementById('cupMin').value, 
+                status_aktif: document.getElementById('cupStatus').value 
+            };
+
+            if (isEdit) {
+                payload.id_kupon = document.getElementById('cupId').value;
+            }
+
+            const res = await apiCall(isEdit ? 'edit_coupon' : 'add_coupon', payload);
+            
+            document.getElementById('btnSaveCupText').innerText = 'Simpan Kupon';
+            document.getElementById('btnSaveCupLoader').classList.add('hidden');
+
+            if (res.success) { 
+                closeModal('couponModal'); 
+                fetchDashboardData(); 
+            } else {
+                alert(res.message);
+            }
+        });
+
+        async function deleteCoupon(id) { 
+            if (!confirm('Yakin hapus kupon diskon ini?')) return; 
+            const res = await apiCall('delete_coupon', {id_kupon:id, id_user_toko: currentUser.id}); 
+            if (res.success) {
+                fetchDashboardData(); 
+            } else {
+                alert(res.message); 
+            }
+        }
+
+        // --- CRUD ONGKIR ---
+        function openShippingModal(id = null) {
+            const form = document.getElementById('shippingForm');
+            form.reset(); 
+            document.getElementById('shpId').value = ''; 
+            document.getElementById('shippingModalTitle').innerText = 'Tambah Tarif Pengiriman';
+            
+            if (id) {
+                const s = globalShipping.find(x => x.id === id);
+                if (s) { 
+                    document.getElementById('shippingModalTitle').innerText = 'Edit Tarif'; 
+                    document.getElementById('shpId').value = s.id; 
+                    document.getElementById('shpArea').value = s.area; 
+                    document.getElementById('shpRate').value = s.rate; 
+                }
+            }
+            document.getElementById('shippingModal').classList.remove('hidden');
+        }
+
+        document.getElementById('shippingForm').addEventListener('submit', async(e) => {
+            e.preventDefault(); 
+            const isEdit = document.getElementById('shpId').value !== '';
+            
+            document.getElementById('btnSaveShpText').innerText = 'Menyimpan...';
+            document.getElementById('btnSaveShpLoader').classList.remove('hidden');
+
+            const payload = { 
+                id_user_toko: currentUser.id, 
+                nama_area: document.getElementById('shpArea').value, 
+                tarif_ongkir: document.getElementById('shpRate').value 
+            };
+
+            if (isEdit) {
+                payload.id_ongkir = document.getElementById('shpId').value;
+            }
+
+            const res = await apiCall(isEdit ? 'edit_shipping' : 'add_shipping', payload);
+            
+            document.getElementById('btnSaveShpText').innerText = 'Simpan Tarif';
+            document.getElementById('btnSaveShpLoader').classList.add('hidden');
+
+            if (res.success) { 
+                closeModal('shippingModal'); 
+                fetchDashboardData(); 
+            } else {
+                alert(res.message);
+            }
+        });
+
+        async function deleteShipping(id) { 
+            if (!confirm('Yakin hapus area ongkir ini?')) return; 
+            const res = await apiCall('delete_shipping', {id_ongkir:id, id_user_toko: currentUser.id}); 
+            if (res.success) {
+                fetchDashboardData(); 
+            } else {
+                alert(res.message); 
             }
         }
 
@@ -1909,6 +2493,14 @@
                 checkout_msg: document.getElementById('setNotifCheckout') ? document.getElementById('setNotifCheckout').value : ''
             };
 
+            // Tangkap Input Halaman Legal
+            const legalSettings = {
+                tos_active: document.getElementById('setTosActive') ? document.getElementById('setTosActive').value : 'off',
+                tos_content: document.getElementById('setTosContent') ? document.getElementById('setTosContent').value : '',
+                privacy_active: document.getElementById('setPrivacyActive') ? document.getElementById('setPrivacyActive').value : 'off',
+                privacy_content: document.getElementById('setPrivacyContent') ? document.getElementById('setPrivacyContent').value : ''
+            };
+
             const payload = {
                 id_user_toko: currentUser.id,
                 nama_toko: document.getElementById('setNamaToko') ? document.getElementById('setNamaToko').value : '',
@@ -1928,7 +2520,8 @@
                 theme_color: document.getElementById('setThemeColor') ? document.getElementById('setThemeColor').value : '',
                 tutorial_data: JSON.stringify(tutArray),
                 social_media: JSON.stringify(smArray),
-                notif_templates: JSON.stringify(notifTemplates)
+                notif_templates: JSON.stringify(notifTemplates),
+                legal_settings: JSON.stringify(legalSettings)
             };
 
             const res = await apiCall('update_store_settings', payload);
@@ -2020,17 +2613,19 @@
 
         function renderCart() {
             const list = document.getElementById('cartItemList');
-            totalCartValue = 0;
+            posSubtotal = 0;
             
             if (cart.length === 0) {
                 list.innerHTML = '<div class="text-center text-slate-400 text-sm mt-10">Keranjang masih kosong</div>';
-                document.getElementById('cartTotal').innerText = 'Rp 0';
+                document.getElementById('cartSubtotalVal').innerText = 'Rp 0';
+                if(document.getElementById('coSubtotal')) document.getElementById('coSubtotal').innerText = 'Rp 0';
+                recalculatePOS();
                 return;
             }
             
             list.innerHTML = cart.map((item, index) => {
                 const sub = item.price * item.qty;
-                totalCartValue += sub;
+                posSubtotal += sub;
                 return `
                 <div class="flex justify-between items-center bg-white p-3 rounded-lg border border-slate-100 shadow-sm relative group">
                     <div class="flex-1 pr-4">
@@ -2045,11 +2640,16 @@
                 `;
             }).join('');
             
-            document.getElementById('cartTotal').innerText = formatRupiah(totalCartValue);
+            document.getElementById('cartSubtotalVal').innerText = formatRupiah(posSubtotal);
+            if(document.getElementById('coSubtotal')) document.getElementById('coSubtotal').innerText = formatRupiah(posSubtotal);
+            recalculatePOS();
         }
 
         function clearCart() { 
             cart = []; 
+            posDiskonVal = 0; 
+            if(document.getElementById('coKuponCode')) document.getElementById('coKuponCode').value = ''; 
+            if(document.getElementById('coOngkir')) document.getElementById('coOngkir').value = ''; 
             document.getElementById('coNama').value = ''; 
             document.getElementById('coWa').value = ''; 
             renderCart(); 
@@ -2061,10 +2661,64 @@
                 return alert("Keranjang Kosong!");
             }
             
-            document.getElementById('coTotalTagihan').innerText = formatRupiah(totalCartValue);
-            document.getElementById('coUangDiterima').value = totalCartValue;
-            
             document.getElementById('checkoutModal').classList.remove('hidden');
+            recalculatePOS();
+        }
+
+        async function applyPOSCoupon() {
+            const code = document.getElementById('coKuponCode').value.trim();
+            const msgEl = document.getElementById('coKuponMsg');
+            
+            if (!code) { 
+                posDiskonVal = 0; 
+                msgEl.classList.add('hidden'); 
+                recalculatePOS(); 
+                return; 
+            }
+            
+            document.getElementById('btnApplyCup').innerText = '...';
+            const res = await apiCall('validate_coupon', { 
+                id_user_toko: currentUser.id, 
+                kode_kupon: code, 
+                subtotal: posSubtotal 
+            });
+            document.getElementById('btnApplyCup').innerText = 'Terapkan';
+            
+            msgEl.classList.remove('hidden');
+            if (res.success) {
+                posDiskonVal = res.diskon; 
+                msgEl.innerText = res.message; 
+                msgEl.className = "text-[10px] mt-1 font-bold text-emerald-600 block"; 
+                recalculatePOS();
+            } else {
+                posDiskonVal = 0; 
+                msgEl.innerText = res.message; 
+                msgEl.className = "text-[10px] mt-1 font-bold text-red-500 block"; 
+                recalculatePOS();
+            }
+        }
+
+        function recalculatePOS() {
+            const ongkirId = document.getElementById('coOngkir') ? document.getElementById('coOngkir').value : '';
+            posOngkirCost = 0;
+            
+            if (ongkirId) { 
+                const shp = globalShipping.find(s => s.id === ongkirId); 
+                if(shp) posOngkirCost = parseInt(shp.rate); 
+            }
+            
+            if (posDiskonVal > posSubtotal) {
+                posDiskonVal = posSubtotal;
+            }
+
+            posGrandTotal = posSubtotal + posOngkirCost - posDiskonVal;
+            if (posGrandTotal < 0) posGrandTotal = 0;
+
+            if(document.getElementById('coOngkirVal')) document.getElementById('coOngkirVal').innerText = formatRupiah(posOngkirCost);
+            if(document.getElementById('coDiskonVal')) document.getElementById('coDiskonVal').innerText = '-' + formatRupiah(posDiskonVal);
+            if(document.getElementById('coGrandTotal')) document.getElementById('coGrandTotal').innerText = formatRupiah(posGrandTotal);
+            
+            document.getElementById('coUangDiterima').value = posGrandTotal;
             hitungKembalian();
         }
 
@@ -2074,14 +2728,14 @@
 
         function hitungKembalian() {
             let u = parseInt(document.getElementById('coUangDiterima').value) || 0;
-            let k = u - totalCartValue;
+            let k = u - posGrandTotal;
             document.getElementById('coKembalian').innerText = k >= 0 ? formatRupiah(k) : "Uang Kurang!";
         }
 
         async function submitCheckout() {
             let method = document.getElementById('coMethod').value;
-            let uang = method === 'Cash' ? parseInt(document.getElementById('coUangDiterima').value) || 0 : totalCartValue;
-            let change = uang - totalCartValue;
+            let uang = method === 'Cash' ? parseInt(document.getElementById('coUangDiterima').value) || 0 : posGrandTotal;
+            let change = uang - posGrandTotal;
             
             if (method === 'Cash' && change < 0) {
                 return alert("Uang pembayaran kurang!");
@@ -2092,30 +2746,42 @@
             let detail = JSON.stringify(cart.map(c => `${c.name} (${c.qty}${c.unit || 'pcs'})`));
             let buyer = document.getElementById('coNama').value || 'Pelanggan POS';
             let wa = document.getElementById('coWa').value || '';
+            let ongkirId = document.getElementById('coOngkir') ? document.getElementById('coOngkir').value : '';
+            let kodeKupon = document.getElementById('coKuponCode') ? document.getElementById('coKuponCode').value.trim() : '';
 
-            const res = await apiCall('add_order', {
+            const payload = {
                 id_user_toko: currentUser.id, 
                 nama_pembeli: buyer, 
-                total_belanja: totalCartValue, 
-                status: 'Selesai',
+                total_belanja: posGrandTotal, 
+                status: 'Selesai', 
                 detail_items: detail, 
-                metode_pembayaran: method, 
+                metode_pembayaran: method,
                 uang_bayar: uang, 
                 kembalian: change, 
-                no_wa_pembeli: wa
-            });
+                no_wa_pembeli: wa,
+                subtotal: posSubtotal, 
+                id_ongkir: ongkirId, 
+                kode_kupon: kodeKupon
+            };
+
+            const res = await apiCall('add_order', payload);
 
             if (res.success) {
-                // Siapkan data untuk Print Struk Thermal
+                // Print Data
                 document.getElementById('strNamaToko').innerText = currentUser.nama_toko.toUpperCase();
                 document.getElementById('strInfoToko').innerText = "Admin: " + currentUser.username + " | WA: " + currentUser.wa_number;
                 document.getElementById('strOrderId').innerText = res.order_id;
                 document.getElementById('strDate').innerText = new Date().toLocaleString('id-ID');
                 document.getElementById('strKasir').innerText = currentUser.username;
                 document.getElementById('strPelanggan').innerText = buyer;
-                document.getElementById('strTotal').innerText = formatRupiah(totalCartValue);
-                document.getElementById('strMethod').innerText = method;
-                document.getElementById('strTunai').innerText = formatRupiah(uang);
+                
+                document.getElementById('strSubtotal').innerText = formatRupiah(posSubtotal);
+                document.getElementById('strOngkir').innerText = formatRupiah(posOngkirCost);
+                document.getElementById('strDiskon').innerText = '-' + formatRupiah(posDiskonVal);
+                document.getElementById('strTotal').innerText = formatRupiah(posGrandTotal);
+                
+                document.getElementById('strMethod').innerText = method; 
+                document.getElementById('strTunai').innerText = formatRupiah(uang); 
                 document.getElementById('strKembali').innerText = formatRupiah(change);
                 
                 document.getElementById('strItems').innerHTML = cart.map(c => `
@@ -2138,7 +2804,7 @@
                 document.getElementById('btnSubmitCheckout').innerHTML = `<i data-lucide="check-circle" class="w-5 h-5 mr-2"></i> Konfirmasi & Cetak Struk`;
                 lucide.createIcons();
 
-                // 3. Panggil Print Dialog (Kasih jeda 500ms biar UI selesai render)
+                // 3. Panggil Print Dialog
                 setTimeout(() => {
                     window.print(); 
                 }, 500);
