@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Toko Online</title>
+    <!-- Judul bawaan dibikin netral -->
+    <title>Belanja Online</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -432,7 +433,8 @@
         function buildStoreUI() {
             document.getElementById('loaderScreen').classList.add('hidden');
 
-            document.title = storeData.nama_toko + " - iMersWAstore";
+            // MENGUBAH TITLE TAB BROWSER SECARA DINAMIS
+            document.title = storeData.nama_toko + " - Belanja Online";
             document.getElementById('storeName').innerText = storeData.nama_toko;
             
             if (storeData.logo) {
